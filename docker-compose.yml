@@ -1,0 +1,16 @@
+version: "3.7"
+services:
+  db:
+    image: postgres:alpine
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=nw_calc
+      - POSTGRES_USER=helix
+      - POSTGRES_PASSWORD=hihi00hihi
+  redis:
+    image: redis:alpine
+    restart: always
+    ports:
+      - 6379:6379

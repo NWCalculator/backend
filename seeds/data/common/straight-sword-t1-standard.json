@@ -1,0 +1,12 @@
+{
+  "name": "Flint Straight Sword",
+  "tier": 1,
+  "category": "weapon",
+  "type": "sword",
+  "craftmanship": "Standard",
+  "description": "",
+  "base_damage": 100,
+  "basic_attack_damage": 150,
+  "heavy_attack_damage": 200,
+  "block_absorbtion": 0.5
+}

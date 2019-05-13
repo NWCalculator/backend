@@ -1,0 +1,22 @@
+{
+  "name": "nwcalculator-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "NODE_ENV=development nodemon -r dotenv/config index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^7.0.0",
+    "fastify": "^2.3.0",
+    "fastify-boom": "^0.1.0",
+    "fastify-knex": "^0.1.1",
+    "knex": "^0.16.5",
+    "objection": "^1.6.8",
+    "pg": "^7.10.0",
+    "require-all": "^3.0.0"
+  }
+}
