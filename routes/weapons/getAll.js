@@ -15,7 +15,7 @@ const getAll = async function(req, res) {
 
   query = query.range(start, end);
 
-  if (req.query) {
+  if (Object.keys(req.query).length) {
     const filters = pick(req.query, ["type", "tier", "grade", "craftmanship"]);
 
     Object.entries(filters).forEach(([name, data]) => {
