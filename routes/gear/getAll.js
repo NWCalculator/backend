@@ -2,6 +2,18 @@
 const Boom = require("boom");
 const pick = require("object.pick");
 
+const schema = {
+  type: "object",
+  properties: {
+    page: { type: "integer", mininum: 1 },
+    limit: { type: "integer", maximum: 100 },
+    type: { type: ["string", "array"] },
+    tier: { type: ["integer", "array"] },
+    grade: { type: ["string", "array"] },
+    craftmanship: { type: ["string", "array"] }
+  }
+};
+
 const getAll = async function(req, res) {
   const Gear = this.models.gear;
 
@@ -40,5 +52,6 @@ const getAll = async function(req, res) {
 module.exports = {
   method: "GET",
   url: "/",
+  schema,
   handler: getAll
 };
