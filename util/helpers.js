@@ -1,5 +1,7 @@
 "use strict";
 
+const pick = require("object.pick");
+
 module.exports.buildQuery = async function(_page, _limit, obj) {
   const qb = this;
 
