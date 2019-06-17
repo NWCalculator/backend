@@ -8,6 +8,7 @@ const { Model } = require("objection");
 
 const startApp = function() {
   const app = buildFastify({ logger: process.env.NODE_ENV === "development" });
+  app.register(require("fastify-cors"), { origin: "*" });
   app.register(require("fastify-knex"), config).ready(err => {
     if (err) throw err;
     if (!app.knex) throw Error("knex not found");

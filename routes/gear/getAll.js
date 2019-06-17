@@ -1,50 +1,18 @@
 "use strict";
 const Boom = require("boom");
-const pick = require("object.pick");
-
-const schema = {
-  type: "object",
-  properties: {
-    page: { type: "integer", mininum: 1 },
-    limit: { type: "integer", maximum: 100 },
-    type: { type: ["string", "array"] },
-    tier: { type: ["integer", "array"] },
-    grade: { type: ["string", "array"] },
-    craftmanship: { type: ["string", "array"] }
-  }
-};
+const { buildQuery } = require("../../util/helpers");
 
 const getAll = async function(req, res) {
-  const Gear = this.models.gear;
-
-  let query = Gear.query().throwIfNotFound();
-
-  let page = req.query.page ? parseInt(req.query.page, 10) : 1,
-    limit = req.query.limit ? parseInt(req.query.limit, 10) : 20;
-
-  let start = (page - 1) * limit,
-    end = page * limit - 1;
-
-  query = query.range(start, end);
-
-  if (Object.keys(req.query).length) {
-    const filters = pick(req.query, ["type", "tier", "grade", "craftmanship"]);
-
-    Object.entries(filters).forEach(([name, data]) => {
-      if (data) {
-        if (Array.isArray(data) && data.length) {
-          query = query.whereIn(name, data);
-        } else {
-          query = query.where(name, data);
-        }
-      }
-    });
-  }
-
   try {
-    const gear = await query;
+    const gear = await buildQuery.call(
+      this.models.gear,
+      req.query.page,
+      req.query.limit,
+      req.query
+    );
     return { gear };
-  } catch {
+  } catch (err) {
+    console.log(err);
     throw Boom.notFound();
   }
 };
@@ -52,6 +20,5 @@ const getAll = async function(req, res) {
 module.exports = {
   method: "GET",
   url: "/",
-  schema,
   handler: getAll
 };
