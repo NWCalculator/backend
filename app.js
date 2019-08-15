@@ -15,9 +15,8 @@ const startApp = function() {
     Model.knex(app.knex);
   });
   app.register(require("fastify-boom"));
-  // app.register(require("./util/objection"));
   app.register(require("./util/injectModels"));
-
+  app.register(require("./util/sanitizer"));
   app.get("/", (req, reply) => reply.status(200).send("HELLO WORLD"));
 
   /* SETUP ROUTES */

@@ -4,8 +4,8 @@ const Boom = require("boom");
 const { buildQuery } = require("../../util/helpers");
 
 const getAll = async function(req, res) {
-  const gearQuery = buildQuery.call(
-    this.models.gear,
+  const apparelQuery = buildQuery.call(
+    this.models.apparel,
     req.query.gPage,
     req.query.gLimit,
     req.query
@@ -19,7 +19,7 @@ const getAll = async function(req, res) {
   );
 
   try {
-    const [gear, weapons] = await Promise.all([gearQuery, weaponQuery]);
+    const [gear, weapons] = await Promise.all([apparelQuery, weaponQuery]);
     return { gear, weapons };
   } catch (err) {
     console.log(err);

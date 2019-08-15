@@ -1,15 +1,18 @@
+"use strict";
 const { Model } = require("objection");
+
+const date = new Date().toISOString();
 
 class Base extends Model {
   $beforeInsert(context) {
     super.$beforeInsert(context);
-    const date = new Date().toISOString();
+
     this.created_at = date;
   }
 
   $beforeUpdate(context) {
     super.$beforeUpdate(context);
-    const date = new Date().toISOString();
+
     this.updated_at = date;
   }
 }

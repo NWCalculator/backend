@@ -1,9 +1,9 @@
 "use strict";
 const Model = require("./Base");
 
-class Weapon extends Model {
+class Gear extends Model {
   static get tableName() {
-    return "weapons";
+    return "apparel";
   }
 
   $beforeInsert(context) {
@@ -18,7 +18,7 @@ class Weapon extends Model {
     return {
       type: "object",
       required: ["name", "craftmanship", "tier", "rarity", "icon", "type"],
-      properties: {
+      propeties: {
         id: { type: "integer" },
         data_type: { type: "string" },
         name: { type: "string" },
@@ -30,12 +30,10 @@ class Weapon extends Model {
         gear_score: { type: "integer" },
         rarity: { type: "string" },
         craftmanship: { type: "string" },
+        defense: { type: "integer" },
         weight: { type: "integer" },
-        requirements: { type: "object" },
-        block_absorption: { type: "integer" },
-        base_power: { type: "integer" },
-        base_damage: { type: "integer" },
-        damage: { type: "string" },
+        absorption: { type: "object" },
+        resistances: { type: "object" },
         created_at: { type: "string" },
         updated_at: { type: "string" }
       }
@@ -43,4 +41,4 @@ class Weapon extends Model {
   }
 }
 
-module.exports = Weapon;
+module.exports = Gear;

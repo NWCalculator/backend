@@ -1,15 +1,22 @@
-"use strict";
 const Model = require("./Base");
 
-class Gear extends Model {
+class Ammo extends Model {
   static get tableName() {
-    return "gear";
+    return "ammo";
+  }
+
+  $beforeInsert(context) {
+    super.$beforeInsert(context);
+  }
+
+  $beforeUpdate(context) {
+    super.$beforeUpdate(context);
   }
 
   static get jsonSchema() {
     return {
       type: "object",
-      required: ["name", "craftmanship", "tier", "grade", "icon", "type"],
+      required: ["name", "craftmanship", "tier", "rarity", "icon", "type"],
       propeties: {
         id: { type: "integer" },
         data_type: { type: "string" },
@@ -20,12 +27,10 @@ class Gear extends Model {
         type: { type: "string" },
         tier: { type: "integer" },
         gear_score: { type: "integer" },
-        grade: { type: "string" },
+        rarity: { type: "string" },
         craftmanship: { type: "string" },
-        defense: { type: "integer" },
         weight: { type: "integer" },
-        absorption: { type: "object" },
-        resistances: { type: "object" },
+        damage_modifier: { type: "integer" },
         created_at: { type: "string" },
         updated_at: { type: "string" }
       }
@@ -33,4 +38,4 @@ class Gear extends Model {
   }
 }
 
-module.exports = Gear;
+module.exports = Ammo;
