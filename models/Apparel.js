@@ -1,7 +1,7 @@
 "use strict";
 const Model = require("./Base");
 
-class Gear extends Model {
+class Apparel extends Model {
   static get tableName() {
     return "apparel";
   }
@@ -41,4 +41,4 @@ class Gear extends Model {
   }
 }
 
-module.exports = Gear;
+module.exports = Apparel;

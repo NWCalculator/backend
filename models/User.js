@@ -1,25 +1,7 @@
 const Model = require("./Base");
+const Password = require("objection-password")();
 
-const bcrypt = require("bcrypt");
-
-const ROUNDS = 10;
-
-const securePassword = async password => {
-  let saltRounds;
-  try {
-    saltRounds = await bcrypt.genSalt(ROUNDS);
-  } catch (err) {
-    return Promise.reject(err);
-  }
-
-  try {
-    await bcrypt.hash(password, genSalt);
-  } catch (err) {
-    return Promise.reject(err);
-  }
-};
-
-class User extends Model {
+class User extends Password(Model) {
   static get tableName() {
     return "users";
   }
@@ -74,28 +56,6 @@ class User extends Model {
         }
       }
     };
-  }
-
-  async securePassword(password) {
-    let saltRounds;
-    try {
-      saltRounds = await bcrypt.genSalt(ROUNDS);
-    } catch (err) {
-      return Promise.reject(err);
-    }
-
-    try {
-      await bcrypt.hash(password, genSalt);
-    } catch (err) {
-      return Promise.reject(err);
-    }
-  }
-
-  verify(pass) {
-    return bcrypt
-      .compare(pass, this.password)
-      .then(match => match)
-      .catch(err => console.log(err));
   }
 }
 
