@@ -19,7 +19,7 @@
     "fastify-jwt": "^1.1.0",
     "fastify-knex": "^0.1.1",
     "fastify-rate-limit": "^2.3.0",
-    "knex": "^0.16.5",
+    "knex": "^0.19.5",
     "objection": "^1.6.8",
     "objection-password": "^2.0.0",
     "pg": "^7.10.0",
