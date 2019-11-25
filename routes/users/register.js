@@ -2,6 +2,8 @@
 const Boom = require("boom");
 const Joi = require("@hapi/joi");
 const crypto = require("crypto");
+const bcrypt = require("bcrypt");
+const { verifyRecaptcha } = require("../../util/helpers");
 
 const schema = {
   body: {
@@ -23,19 +25,40 @@ const schema = {
 };
 
 const register = async function(req, res) {
-  const { Users } = this.models;
-  const { sendMockMail } = this.mail;
+  const { nodemailer } = this;
 
-  let authToken = null,
+  let code = null,
     email = null;
 
   try {
-    authToken = crypto.randomBytes(16).toString("hex");
-    await Users.query().insert({
-      ...req.body.credentials,
-      authToken
-    });
+    const captcha = await verifyRecaptcha(
+      process.env.REPCATCHA_SECRET,
+      req.body.recaptchaResponse
+    );
+    console.log(captcha);
   } catch (err) {
+    console.log(err);
+    throw Boom.badData(err);
+  }
+
+  try {
+    const salt = await bcrypt.genSalt(12);
+    const password = await bcrypt.hash(req.body.credentials.password, salt);
+
+    code = crypto.randomBytes(16).toString("hex");
+
+    await this.models.user
+      .query()
+      .insert({
+        username: req.body.credentials.username,
+        email: req.body.credentials.email,
+        password,
+        activation_code: code
+      })
+      .first()
+      .returning("email");
+  } catch (err) {
+    console.log(err);
     if (err.code === "23505") {
       throw Boom.badRequest("User already exists.");
     }
@@ -43,24 +66,28 @@ const register = async function(req, res) {
   }
 
   try {
-    await sendMockMail(
-      req.body.credentials.email,
-      "noreply@nwcalculator.com",
-      "Activation Code",
-      `http://localhost:8080/u/activate?authToken=${authToken}`
-    );
+    const info = await nodemailer.sendMail({
+      from: "noreply@nwcalculator.com",
+      to: req.body.credentials.email,
+      subject: "Activation Code",
+      text: `http://localhost:3000/authenticate/${code}`
+    });
+
+    console.log(info);
+
     return {
-      message: `Activation email sent to ${req.body.credentials.email}`
+      message: `Activation email send to ${req.body.credentials.email}`
     };
   } catch (err) {
-    throw Boom.boomify(err, { message: err.message });
+    console.log(err);
+    throw Boom.internal(err);
   }
 };
 
 module.exports = {
   method: "POST",
-  schema,
-  schemaCompiler: schema => data => Joi.validate(data, schema),
+  // schema,
+  // schemaCompiler: schema => data => schema.validate(data),
   url: "/register",
   handler: register
 };

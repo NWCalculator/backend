@@ -16,12 +16,23 @@ const startApp = function() {
   });
   app.register(require("fastify-boom"));
   app.register(require("./util/sanitizer"));
+  // app.register(require("./util/mailer"));
+  app.register(require("fastify-nodemailer"), {
+    host: "smtp.ethereal.email",
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.TEST_EMAIL_USER,
+      pass: process.env.TEST_EMAIL_PASS
+    }
+  });
   app.get("/", (req, reply) => reply.status(200).send("HELLO WORLD"));
 
   /* SETUP ROUTES */
   Object.entries(routes).forEach(([namespace, router]) =>
     app.register(router, { prefix: `/v1/${namespace}` })
   );
+
   return app;
 };
 

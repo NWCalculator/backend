@@ -1,5 +1,6 @@
 .DS_Store
 .env
+nyc_output/
 knexfile.js
 node_modules/
 seeds/

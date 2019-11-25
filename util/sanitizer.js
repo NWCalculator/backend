@@ -1,3 +1,4 @@
+"use strict";
 const sanitizeHtml = require("sanitize-html");
 const fp = require("fastify-plugin");
 
@@ -7,7 +8,7 @@ const recursiveSanitize = (obj, opts) => {
     if (val && typeof val === "object" && !Array.isArray(val)) {
       res[key] = recursiveSanitize(val, opts);
     } else if (val && typeof val === "string") {
-      res[key] = recursiveSanitize(val, opts);
+      res[key] = sanitizeHtml(val, opts);
     } else {
       res[key] = val;
     }

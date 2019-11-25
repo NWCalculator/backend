@@ -1,7 +1,6 @@
 "use strict";
 const path = require("path");
 const fp = require("fastify-plugin");
-const fs = require("fs");
 
 const Knex = require("knex");
 

@@ -1,36 +1,34 @@
 const Model = require("./Base");
-const Password = require("objection-password")();
+const bcrypt = require("bcrypt");
 
-class User extends Password(Model) {
+class User extends Model {
   static get tableName() {
     return "users";
   }
 
-  $beforeInsert(context) {
-    super.$beforeInsert(context);
-    this.password = securePassword(this.password);
-  }
-
-  $beforeUpdate(context) {
-    super.$beforeUpdate(context);
+  async verifyPassword(guess) {
+    try {
+      await bcrypt.compare(this.password, guess);
+    } catch (err) {
+      return Promise.reject(err);
+    }
   }
 
   static get jsonSchema() {
     return {
       type: "object",
-      required: ["name", "username", "forum_name", "email", "password"],
-      propeties: {
-        id: { type: "integer" },
-        name: { type: "string" },
+      required: ["username", "email", "password", "activation_code"],
+      properties: {
         username: { type: "string" },
-        forum_name: { type: "string" },
         email: { type: "string" },
         password: { type: "string" },
-        last_login: { type: "string" },
-        last_login_ip: { type: "string" },
-        login_attempts: { type: "integer" },
-        last_password_recovery: { type: "string" },
+        activation_code: { type: "string" },
         password_recovery_token: { type: "string" },
+        last_login_date: { type: "string" },
+        last_login_ip: { type: "string" },
+        last_password_recovery: { type: "string" },
+        login_attempts: { type: "integer" },
+        is_active: { type: "boolean" },
         is_admin: { type: "boolean" },
         is_curator: { type: "boolean" },
         is_deactivated: { type: "boolean" },

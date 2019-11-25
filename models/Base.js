@@ -8,9 +8,10 @@ class Base extends Model {
     super.$beforeInsert(context);
 
     this.created_at = date;
+    this.updated_at = date;
   }
 
-  $beforeUpdate(context) {
+  $beforeUpdate(queryOptions, context) {
     super.$beforeUpdate(context);
 
     this.updated_at = date;

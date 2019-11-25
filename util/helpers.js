@@ -1,8 +1,9 @@
 "use strict";
 
 const pick = require("object.pick");
+const got = require("got");
 
-module.exports.buildQuery = async function(req) {
+const buildQuery = async function(req) {
   const qb = this;
 
   let query = qb.query().throwIfNotFound();
@@ -31,3 +32,17 @@ module.exports.buildQuery = async function(req) {
 
   return query;
 };
+
+const verifyRecaptcha = async function(secret, response) {
+  try {
+    await got("siteverify", {
+      method: "POST",
+      baseUrl: "https://www.google.com/recaptcha/api",
+      json: { secret, response }
+    });
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+module.exports = { buildQuery, verifyRecaptcha };

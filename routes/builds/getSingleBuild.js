@@ -3,7 +3,7 @@
 const Boom = require("boom");
 
 const getSingleBuild = async function(req, reply) {
-  const { Build } = this.models;
+  const { userbuilds } = this.models;
 
   const APPAREL = [
     "head",
